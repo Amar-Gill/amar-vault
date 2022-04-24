@@ -4,15 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "db676c285d6d65a1",
+        "id": "1e8c74d987b02441",
         "type": "leaf",
         "state": {
-          "type": "markdown",
-          "state": {
-            "file": "Vim Commands.md",
-            "mode": "source",
-            "source": false
-          }
+          "type": "empty",
+          "state": {}
         }
       }
     ],
@@ -70,7 +66,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Vim Commands.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -96,7 +91,7 @@
     "direction": "horizontal",
     "width": 300
   },
-  "active": "db676c285d6d65a1",
+  "active": "1e8c74d987b02441",
   "lastOpenFiles": [
     "Vim Commands.md"
   ]
