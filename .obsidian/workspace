@@ -4,14 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "e8dd1be34e79d1b5",
+        "id": "43d31b7f51632e4c",
         "type": "leaf",
         "state": {
-          "type": "diff-view",
-          "state": {
-            "file": ".obsidian/workspace",
-            "staged": false
-          }
+          "type": "empty",
+          "state": {}
         }
       }
     ],
@@ -93,7 +90,7 @@
     "direction": "horizontal",
     "width": 300
   },
-  "active": "e8dd1be34e79d1b5",
+  "active": "43d31b7f51632e4c",
   "lastOpenFiles": [
     "vim-commands.md",
     "test-file.md"
