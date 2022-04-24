@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "test-file.md",
+            "file": "Vim Commands.md",
             "mode": "source",
             "source": false
           }
@@ -69,7 +69,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "test-file.md",
+                "file": "Vim Commands.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -93,11 +93,12 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "active": "1e8c74d987b02441",
   "lastOpenFiles": [
-    "test-file.md",
-    "Vim Commands.md"
+    "Vim Commands.md",
+    "test-file.md"
   ]
 }
