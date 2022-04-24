@@ -7,10 +7,11 @@
         "id": "05ba0a4001ac076a",
         "type": "leaf",
         "state": {
-          "type": "diff-view",
+          "type": "markdown",
           "state": {
-            "file": ".obsidian/app.json",
-            "staged": false
+            "file": "Vim Commands.md",
+            "mode": "source",
+            "source": false
           }
         }
       }
@@ -68,6 +69,7 @@
             "state": {
               "type": "backlink",
               "state": {
+                "file": "Vim Commands.md",
                 "collapseAll": true,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
