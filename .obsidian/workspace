@@ -4,14 +4,13 @@
     "type": "split",
     "children": [
       {
-        "id": "05ba0a4001ac076a",
+        "id": "e8dd1be34e79d1b5",
         "type": "leaf",
         "state": {
-          "type": "markdown",
+          "type": "diff-view",
           "state": {
-            "file": "Vim Commands.md",
-            "mode": "source",
-            "source": false
+            "file": ".obsidian/workspace",
+            "staged": false
           }
         }
       }
@@ -69,14 +68,13 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Vim Commands.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
                 "showSearch": false,
                 "searchQuery": "",
-                "backlinkCollapsed": true,
-                "unlinkedCollapsed": true
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": false
               }
             }
           },
@@ -93,12 +91,11 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
-  "active": "05ba0a4001ac076a",
+  "active": "e8dd1be34e79d1b5",
   "lastOpenFiles": [
-    "Vim Commands.md",
+    "vim-commands.md",
     "test-file.md"
   ]
 }
