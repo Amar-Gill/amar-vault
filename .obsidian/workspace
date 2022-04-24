@@ -7,8 +7,11 @@
         "id": "43d31b7f51632e4c",
         "type": "leaf",
         "state": {
-          "type": "empty",
-          "state": {}
+          "type": "diff-view",
+          "state": {
+            "file": ".obsidian/workspace",
+            "staged": false
+          }
         }
       }
     ],
