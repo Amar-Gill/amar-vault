@@ -123,9 +123,34 @@ Next, let's create a `<AddressSearch />` component for the address search contro
 
 ```tsx
 import { Control, DomUtil } from 'leaflet';
+import { useMap } from 'react-leaflet';
+import { useEffect } from 'react';
 
 export const AddressSearch = () => {
+	const mapContainer = useMap();
+	
+	const SearchControl = Control.extend({
+		options: {
+			position: 'topright',
+		},
+		onAdd: function(map: Map) {
+			//TODO
+		},
+		onRemove: function(map: Map) {
+			return;
+		}
+	});
 
+	const searchControl = new SearchControl();
 
+	useEffect(() => {
+		mapContainer.addControl(searchControl);
+	}, []);
+
+	return null;
 }
 ```
+
+Here is the core concept on adding custom leaflet controls in React. The `Control.extend` method returns a class that implements the leaflet `Control` type. We instantiate an instance of the new control, and through the  `useEffect` hook, we add the control with the `addControl` method on the `mapContainer` that is exposed through the `useMap` hook. The component itself then returns `null`.
+
+The `<AddressSearch />` component can be added as a child of our `<Map>` component inside `Map.tsx`. This is handy so all control functionality remains encapsulated inside the Map component, and more importantly, the ui element will be rendered on top of the map tiles, which is a nice ux to have.
