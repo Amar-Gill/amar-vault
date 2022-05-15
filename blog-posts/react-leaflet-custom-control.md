@@ -19,7 +19,7 @@ npm i leaflet react-leaflet
 npm i @types/leaflet # optional
 ```
 
-The (react-leaflet docs)[] instruct us to follow the standard set up for a vanilla web project before using the React bindings provided by the package. The set up involves importing the stylesheet for the map ui:
+The [react-leaflet docs]() instruct us to follow the standard set up for a vanilla web project before using the React bindings provided by the package. The set up involves importing the stylesheet for the map ui:
 
 ```tsx
  <link
@@ -83,10 +83,10 @@ const LocationMarker = () => {
 };
 
 const Map = () => {
-  const {position, setPosition } = useState<LatLng>([51.505, -0.09]);
+  const {position, setPosition } = useState<LatLng>(null!);
 
   return (
-    <MapContainer center={position}>
+    <MapContainer center={position ?? [51.505, -0.09]}>
       <TileLayer />
       <LocationMarker setPosition={setPosition} />
     </MapContainer>
@@ -100,4 +100,11 @@ Let's break down what we've added.
 
 - We update `<Map>` to have a state for the position value.
 - We create a `<LocationMarker />` component, which renders the `<Marker>` and `<Popup>` components imported from `react-leaflet`
-- We pass `setPosition` as a prop into `<LocationMarker />` so the map get's centered on the clicked location
+- We pass `setPosition` as a prop into `<LocationMarker />` so the map get's centered on the clicked location, when the click event is processed by the `<LocationMarker />` component
+- Through the `useMapEvents` hook, we can define an event handler for the click event, and also get access to the `Map` object, so we may call the `flyTo` method, centering the map view on the newly place marker
+- Finally the `<Popup>` component can be a child of the `<Marker>` component, and it can include basic html inside; we show the latitude and longitude information of the positon in our example
+
+### Creating our Custom Control
+In this example we will add a text input control that allows us to look up an address, and have the map set it's view to the location. It's the same functionality you'd expect for Google maps.
+
+We will leverage the [Geoapify]() api for the address look up functionality. It has a generous request limit of 3000 api calls daily for the free tier, which is handy for prototyping. Geoapify also has a handy (npm pa)
