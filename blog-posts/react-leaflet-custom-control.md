@@ -107,4 +107,25 @@ Let's break down what we've added.
 ### Creating our Custom Control
 In this example we will add a text input control that allows us to look up an address, and have the map set it's view to the location. It's the same functionality you'd expect for Google maps.
 
-We will leverage the [Geoapify]() api for the address look up functionality. It has a generous request limit of 3000 api calls daily for the free tier, which is handy for prototyping. Geoapify also has a handy (npm pa)
+We will leverage the [Geoapify]() api for the address look up functionality. It has a generous request limit of 3000 api calls daily for the free tier, which is handy for prototyping. Geoapify also has a handy [address search npm package]() which makes it easy to create the input element with all styling and interactivity we need for the component, including making api calls to the Geoapify api.
+
+Note: there is a separate [npm package for a react component]() that wraps address search and exposes it as a react component. We will **not** be using the react package, because only native DOM elements can be added as a custom control onto a Leaflet map instance. This will be made obvious when we implement the custom control.
+
+Let's install the package for the address search element:
+
+```bash
+npm i @geoapify/geocoder-autocomplete
+```
+
+You will need to visit the [geoapify]() platform and register so you can obtain an api key.
+
+Next, let's create a `<AddressSearch />` component for the address search control. We will build this component up incrementally. A leaflet control has the type of `Control` with the additional `onAdd` and `onRemove` properties:
+
+```tsx
+import { Control, DomUtil } from 'leaflet';
+
+export const AddressSearch = () => {
+
+
+}
+```
