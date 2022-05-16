@@ -109,13 +109,19 @@ We will leverage the [Geoapify]() api for the address look up functionality. It 
 
 Note: there is a separate [npm package for a react component]() that wraps address search functionality and exposes it as a react component. We will **not** be using the react package, because only native DOM elements can be added as a custom control onto a Leaflet map instance. As shown in the previous example, we returned an element which implements the `HTMLDivElement` type.
 
-Let's install the package for the address search element:
+Before we proceed, you will need to visit the [geoapify]() platform and register so you can obtain an api key.
+
+Next, install the package for the address search element:
 
 ```bash
 npm i @geoapify/geocoder-autocomplete
 ```
 
-You will need to visit the [geoapify]() platform and register so you can obtain an api key.
+Import the stylesheet into your `globals.css` file:
+
+```css
+@import '~@geoapify/geocoder-autocomplete/styles/minimal.css';
+```
 
 Let's modify the  `<AddressSearch />` as follows:
 
@@ -155,12 +161,6 @@ export const AddressSearch = () => {
 			);
 
 			autocomplete.on('select', (location) => {
-				if (!location) {
-					return;
-				}
-				const { lat, lon } = location.properties;
-				const newPosition = new LatLng(lat, lon);
-				setPosition(newPosition);
 				map.setView(newPosition, map.getZoom());
 			});
 
@@ -192,6 +192,62 @@ more functions.
 So when we return `el` from `onAdd`, we get the fully functional address search input element as a map control.
 
 ### Optimization
-something something production, experience react devs.
+something something production, experienced react devs.
 
-Let's wrap the expensive operations of creating dom elements and adding event listeners with the `useMemo` hook. We can return the instance of the `SearchControl`
+Let's wrap the expensive operations of creating dom elements and adding event listeners with the `useMemo` hook. We can return the instance of the `SearchControl` class from the hook, so that it is available in our `useEffect` hook:
+
+```tsx
+export const AddressSearch = () => {
+  const mapContainer = useMap();
+
+  const searchControl = useMemo(() => {
+    const SearchControl = Control.extend({
+      options: {
+        position: 'topright',
+      },
+      onAdd: function (map: Map) {
+        const el = DomUtil.create('div');
+
+        el.className = 'relative minimal round-borders';
+
+        el.addEventListener('click', (e) => {
+          e.stopPropagation();
+        });
+
+        el.addEventListener('dblclick', (e) => {
+          e.stopPropagation();
+        });
+
+        const autocomplete = new GeocoderAutocomplete(
+          el,
+          `${process.env.NEXT_PUBLIC_GEOAPIFY}`,
+          {
+            placeholder: 'Enter an address',
+          },
+        );
+
+        autocomplete.on('select', (location) => {
+          map.setView(newPosition, map.getZoom());
+        });
+
+        autocomplete.on('suggestions', (suggestions) => {
+          return;
+        });
+
+        return el;
+      },
+      onRemove: function (map: Map) {
+        return;
+      },
+    });
+
+    return new SearchControl();
+  }, [setPosition]);
+
+  useEffect(() => {
+    mapContainer.addControl(searchControl);
+  }, [mapContainer, searchControl]);
+
+  return null;
+};
+```
