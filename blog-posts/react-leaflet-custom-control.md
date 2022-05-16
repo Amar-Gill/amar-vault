@@ -1,9 +1,5 @@
-how to create a custom control element and add it to the map in a react app
-
-packages
-- leaflet
-- react-leaflet
-- @geoapify/geocoder-autocomplete
+TLDR
+how to create a custom control element and add it to a leaflet map in a react app
 
 Leaflet is a great package to easily integrate map and GIS functionality into your web application. Bonus points for being open source so you don't need to rely on Google Maps (which is also a great option).
 
@@ -12,7 +8,7 @@ The goal of this article is to add a custom address search control component ins
 This article is focused on creating a custom control for the React flavour of Leaflet. There are plenty of articles on the web building custom leaflet controls using Vanilla JS.
 
 ### Getting Started
-Let's add a standard map to our web page using the `react-leaflet` package.
+Let's add a standard map to our React app using the `react-leaflet` package.
 
 ```bash
 npm i leaflet react-leaflet
@@ -56,7 +52,7 @@ export default Map;
 This gives us a basic leaflet map centered on London, England. It has a zoom control and click and drag functionality set up by default.
 
 ### Creating our Custom Control
-Before we make the interactive control element, let's see how to add an arbitrary html element as an control overlay to the leaflet map instance. A leaflet control has the type of `Control` with the additional `onAdd` and `onRemove` properties:
+Before we make the interactive control element, let's see how to add an arbitrary html element as a control overlay to the leaflet map instance. A leaflet control has the type of `Control` with the additional `onAdd` and `onRemove` properties:
 
 ```tsx
 import { Control, DomUtil } from 'leaflet';
@@ -97,22 +93,21 @@ Here is the core concept on adding custom leaflet controls in React. The `Contro
 
 Inside the options of the `Control.extend` method, we show a trivial example of how to add a simple `<div>`. Leaflet has a built in `DomUtil.create` function, which takes in a string representing an html tag name. We give it the `.basic-control` css class so we can visualize it, and then return the element from the `onAdd` method.
 
-The `<AddressSearch />` component can then be added as a child of our `<Map>` component inside `Map.tsx`. This is handy so all control functionality remains encapsulated inside the Map component, and more importantly, the ui element will be rendered on top of the map tiles, which is a nice ux to have.
+The `<AddressSearch />` component can then be added as a child of the Leaflet `<MapContainer>` component inside `Map.tsx`. This is handy so all control functionality remains encapsulated inside the Map component, and more importantly, the ui element will be rendered on top of the map tiles, which makes for an intuitive map control ux in my opinion.
 
 ```tsx
 <MapContainer>
 	<TileLayer />
-	<LocationMarker />
 	<AddressSearch />
 </MapContainer>
 ```
 
 ### The Geoapify Address Search
-In this example we will add a text input control that allows us to look up an address, and have the map set it's view to the location. It's the same functionality you'd expect for Google maps.
+Let's make something useful now. In this example we will add a text input control that allows us to look up an address, and have the map set it's view to the location. 
 
 We will leverage the [Geoapify]() api for the address look up functionality. It has a generous request limit of 3000 api calls daily for the free tier, which is handy for prototyping. Geoapify also has a handy [address search npm package]() which makes it easy to create the input element with all styling and interactivity we need for the component, including making api calls to the Geoapify api.
 
-Note: there is a separate [npm package for a react component]() that wraps address search and exposes it as a react component. We will **not** be using the react package, because only native DOM elements can be added as a custom control onto a Leaflet map instance. This will be made obvious when we implement the custom control.
+Note: there is a separate [npm package for a react component]() that wraps address search functionality and exposes it as a react component. We will **not** be using the react package, because only native DOM elements can be added as a custom control onto a Leaflet map instance. As shown in the previous example, we returned an element which implements the `HTMLDivElement` type.
 
 Let's install the package for the address search element:
 
@@ -122,4 +117,81 @@ npm i @geoapify/geocoder-autocomplete
 
 You will need to visit the [geoapify]() platform and register so you can obtain an api key.
 
-Next, let's create a `<AddressSearch />` component for the address search control. We will build this component up incrementally. 
+Let's modify the  `<AddressSearch />` as follows:
+
+```tsx
+import { GeocoderAutocomplete } from '@geoapify/geocoder-autocomplete';
+import { Control, DomUtil } from 'leaflet';
+import { useMap } from 'react-leaflet';
+import { useEffect } from 'react';
+
+export const AddressSearch = () => {
+	const mapContainer = useMap();
+	
+	const SearchControl = Control.extend({
+		options: {
+			position: 'topright',
+		},
+		onAdd: function(map: Map) {
+
+			const el = DomUtil.create('div');
+
+			el.className = 'relative minimal';
+			
+			el.addEventListener('click', (e) => {
+				e.stopPropagation();
+			});
+
+			el.addEventListener('dblclick', (e) => {
+				e.stopPropagation();
+			});
+
+			const autocomplete = new GeocoderAutocomplete(
+				el,
+				`${process.env.NEXT_PUBLIC_GEOAPIFY}`,
+				{
+					placeholder: 'Enter an address',
+				},
+			);
+
+			autocomplete.on('select', (location) => {
+				if (!location) {
+					return;
+				}
+				const { lat, lon } = location.properties;
+				const newPosition = new LatLng(lat, lon);
+				setPosition(newPosition);
+				map.setView(newPosition, map.getZoom());
+			});
+
+			autocomplete.on('suggestions', (suggestions) => {
+				return;
+			});
+
+			return el;
+		},
+		onRemove: function(map: Map) {
+			return;
+		}
+	});
+
+	const searchControl = new SearchControl();
+
+	useEffect(() => {
+		mapContainer.addControl(searchControl);
+	}, []);
+
+	return null;
+}
+```
+
+The `GeocoderAutocomplete` class accepts as arguments an html element, the api key, and some optional configurations. That line of code will add the search input element as a child of the parent `<div>` element denoted by `el`. 
+
+more functions.
+
+So when we return `el` from `onAdd`, we get the fully functional address search input element as a map control.
+
+### Optimization
+something something production, experience react devs.
+
+Let's wrap the expensive operations of creating dom elements and adding event listeners with the `useMemo` hook. We can return the instance of the `SearchControl`
