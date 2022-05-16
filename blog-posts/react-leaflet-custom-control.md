@@ -71,10 +71,10 @@ export const AddressSearch = () => {
 			position: 'topright',
 		},
 		onAdd: function(map: Map) {
-			//TODO
+
 			const el = DomUtil.create('div');
 
-      el.className = 'relative';
+			el.className = 'basic-control';
 
 			return el;
 		},
@@ -95,7 +95,17 @@ export const AddressSearch = () => {
 
 Here is the core concept on adding custom leaflet controls in React. The `Control.extend` method returns a class that implements the leaflet `Control` type. We instantiate an instance of the new control, and through the  `useEffect` hook, we add the control with the `addControl` method on the `mapContainer` that is exposed through the `useMap` hook. The component itself then returns `null`.
 
-The `<AddressSearch />` component can be added as a child of our `<Map>` component inside `Map.tsx`. This is handy so all control functionality remains encapsulated inside the Map component, and more importantly, the ui element will be rendered on top of the map tiles, which is a nice ux to have.
+Inside the options of the `Control.extend` method, we show a trivial example of how to add a simple `<div>`. Leaflet has a built in `DomUtil.create` function, which takes in a string representing an html tag name. We give it the `.basic-control` css class so we can visualize it, and then return the element from the `onAdd` method.
+
+The `<AddressSearch />` component can then be added as a child of our `<Map>` component inside `Map.tsx`. This is handy so all control functionality remains encapsulated inside the Map component, and more importantly, the ui element will be rendered on top of the map tiles, which is a nice ux to have.
+
+```tsx
+<MapContainer>
+	<TileLayer />
+	<LocationMarker />
+	<AddressSearch />
+</MapContainer>
+```
 
 ### The Geoapify Address Search
 In this example we will add a text input control that allows us to look up an address, and have the map set it's view to the location. It's the same functionality you'd expect for Google maps.
