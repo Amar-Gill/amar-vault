@@ -35,7 +35,7 @@ const Map = () => {
 
   return (
     <MapContainer
-      className="h-full flex-auto"
+      id='map'
       center={[51.505, -0.09]}
       zoom={13}>
       <TileLayer
@@ -50,6 +50,14 @@ export default Map;
 ```
 
 This gives us a basic leaflet map centered on London, England. It has a zoom control and click and drag functionality set up by default.
+
+Like the leaflet docs mentioned, the map container needs to be given an explicit height. For the react-leaflet example, we can apply the style on the `<MapContainer>` component itself. By giving the component an id of `map`, we can make the following css rule:
+
+```css
+#map {
+  height: 100vh;
+}
+```
 
 ### Creating our Custom Control
 Before we make the interactive control element, let's see how to add an arbitrary html element as a control overlay to the leaflet map instance. A leaflet control has the type of `Control` with the additional `onAdd` and `onRemove` properties:
@@ -86,6 +94,15 @@ export const AddressSearch = () => {
 	}, []);
 
 	return null;
+}
+```
+
+With the `basic-control` class defined as below, we will see a blue square in the top right corner of the map.
+```css
+.basic-control {
+  height: 30px;
+  width: 30px;
+  background-color: aqua;
 }
 ```
 
