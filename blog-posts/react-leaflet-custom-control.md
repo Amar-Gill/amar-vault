@@ -1,9 +1,9 @@
 TLDR
 how to create a custom control element and add it to a leaflet map in a react app
 
-Leaflet is a great package to easily integrate map and GIS functionality into your web application. Bonus points for being open source so you don't need to rely on Google Maps (which is also a great option).
+Leaflet is a great package to easily integrate map and GIS functionality into your web application. Bonus points for being open source so you don't need to rely on Google Maps.
 
-The goal of this article is to add a custom address search control component inside the leaflet map container. I emphasize inside, because the only way to render UI elements ontop of the map tiles is to use the Leaflet controls API.
+The goal of this article is to add a custom address search control component inside the leaflet map container. I emphasize inside, because the only way to render UI elements on top of the map tiles is to use the Leaflet controls API.
 
 This article is focused on creating a custom control for the React flavour of Leaflet. There are plenty of articles on the web building custom leaflet controls using Vanilla JS.
 
