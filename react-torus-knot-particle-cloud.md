@@ -7,3 +7,7 @@ parameter values to build the effect with:
 Main concept of project is how order can emerge from chaos. As if nature creates order on its own.
 
 The system used is still deterministic.
+
+Stack notes:
+- react-three-fiber
+- leva (GUI) library: https://github.com/pmndrs/leva
