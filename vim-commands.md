@@ -19,3 +19,9 @@ Delete currently open buffer.
 
 ### :find [string]
 Find files (within pwd or also nested folders with fuzzy finding enabled). Hit enter to create new buffer for it.
+
+### :h [string]
+Get help notes on vim command or vimrc options
+
+### :options
+Show all vimrc options
