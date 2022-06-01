@@ -60,7 +60,7 @@ Like the leaflet docs mentioned, the map container needs to be given an explicit
 ```
 
 ### Creating our Custom Control
-Before we make the interactive control element, let's see how to add an arbitrary html element as a control overlay to the leaflet map instance. A leaflet control has the type of `Control` with the additional `onAdd` and `onRemove` properties:
+Before we make the interactive control element, let's see how to add an arbitrary html element as a control overlay to the leaflet map instance. A leaflet control is an instance of the `Control` class with the additional `onAdd` and `onRemove` methods:
 
 ```tsx
 import { Control, DomUtil } from 'leaflet';
@@ -80,6 +80,10 @@ export const AddressSearch = () => {
 
 			el.className = 'basic-control';
 
+			el.onclick = function() {
+				alert("hello world");
+			}
+
 			return el;
 		},
 		onRemove: function(map: Map) {
@@ -97,7 +101,7 @@ export const AddressSearch = () => {
 }
 ```
 
-With the `basic-control` class defined as below, we will see a blue square in the top right corner of the map.
+With the `basic-control` css class defined as below, we will see a blue square in the top right corner of the map.
 ```css
 .basic-control {
   height: 30px;
@@ -108,7 +112,7 @@ With the `basic-control` class defined as below, we will see a blue square in th
 
 Here is the core concept on adding custom leaflet controls in React. The `Control.extend` method returns a class that implements the leaflet `Control` type. We instantiate an instance of the new control, and through the  `useEffect` hook, we add the control with the `addControl` method on the `mapContainer` that is exposed through the `useMap` hook. The component itself then returns `null`.
 
-Inside the options of the `Control.extend` method, we show a trivial example of how to add a simple `<div>`. Leaflet has a built in `DomUtil.create` function, which takes in a string representing an html tag name. We give it the `.basic-control` css class so we can visualize it, and then return the element from the `onAdd` method.
+Inside the options of the `Control.extend` method, we show a trivial example of how to add a simple `<div>`. Leaflet has a built in `DomUtil.create` function, which takes in a string representing an html tag name. Through `el.className` We give it the `.basic-control` css class so we can visualize it. With `el.onclick` we can add an arbitrary event listener to the element. The element returned from the `onAdd` method will be the html element used for the control, with whatever styles and event listeners you add.
 
 The `<AddressSearch />` component can then be added as a child of the Leaflet `<MapContainer>` component inside `Map.tsx`. This is handy so all control functionality remains encapsulated inside the Map component, and more importantly, the ui element will be rendered on top of the map tiles, which makes for an intuitive map control ux in my opinion.
 
