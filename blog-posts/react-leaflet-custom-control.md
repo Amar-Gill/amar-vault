@@ -114,7 +114,7 @@ Here is the core concept on adding custom leaflet controls in React. The `Contro
 
 Inside the options of the `Control.extend` method, we show a trivial example of how to add a simple `<div>`. Leaflet has a built in `DomUtil.create` function, which takes in a string representing an html tag name. Through `el.className` We give it the `.basic-control` css class so we can visualize it. With `el.onclick` we can add an arbitrary event listener to the element. The element returned from the `onAdd` method will be the html element used for the control, with whatever styles and event listeners you add.
 
-The `<AddressSearch />` component can then be added as a child of the Leaflet `<MapContainer>` component inside `Map.tsx`. This is handy so all control functionality remains encapsulated inside the Map component, and more importantly, the ui element will be rendered on top of the map tiles, which makes for an intuitive map control ux in my opinion.
+The `<AddressSearch />` component can then be added as a child of the Leaflet `<MapContainer>` component inside `Map.tsx`. This is handy so all control functionality remains encapsulated inside the Map component, and more importantly, the ui element will be rendered on top of the map tiles, which makes for an intuitive map control ux.
 
 ```tsx
 <MapContainer>
@@ -208,7 +208,16 @@ export const AddressSearch = () => {
 
 The `GeocoderAutocomplete` class accepts as arguments an html element, the api key, and some optional configurations. That line of code will add the search input element as a child of the parent `<div>` element denoted by `el`. 
 
-more functions.
+The autocomplete class exposes methods to attach event listeners to the input element. A list of events specific to the search field can be found here LINK. For this example we will make use of the `select` and `suggestions` events. The select event is triggered when one of the suggestions from the dropdown list of matching addresses / locations is clicked on. The callback function used for the `select` event can act as a closure, since the callback function of onAdd takes in the `map` instance as a parameter. We can call the leaflet setView method to move the map to the new coordinates.
+
+Note: information returned from matching the text in the input fields counts toward the free API credits.
+
+The npm package ships with their own styles. Refer to them here LINK.
+
+Some notes on the event listeners added to the element:
+- the `click` and `dblclick` event listeners call the `stopPropogation` method so when a user clicks or double clicks on the input field, the map tile behind the control element does not receice a click event and therefore trigger any other event listeners you set for the map tiles.
+
+
 
 So when we return `el` from `onAdd`, we get the fully functional address search input element as a map control.
 
